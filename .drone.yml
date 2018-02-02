@@ -9,7 +9,6 @@ pipeline:
       - echo "deploy_to $${deploy_to}"
     when:
       event: [deployment, push]
-      branch: master
 
 matrix:
   include:
