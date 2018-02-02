@@ -1,0 +1,22 @@
+pipeline:
+
+  deploy:
+    commands:
+      - echo "droning on!"
+      - echo "drone build $${DRONE_BUILD_NUMBER}"
+      - echo "event $${event}"
+      - echo "deploy_to $${deploy_to}"
+    when:
+      event: [deployment, push]
+      branch: master
+
+matrix:
+  include:
+    - event: push
+      deploy_to: dev
+    - event: deployment
+      deploy_to: uat
+    - event: deployment
+      deploy_to: preprod
+    - event: deployment
+      deploy_to: prod
