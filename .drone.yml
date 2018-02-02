@@ -1,6 +1,7 @@
 pipeline:
 
   deploy:
+    image: ukhomeofficedigital/centos-base
     commands:
       - echo "droning on!"
       - echo "drone build $${DRONE_BUILD_NUMBER}"
