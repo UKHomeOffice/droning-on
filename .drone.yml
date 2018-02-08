@@ -1,22 +1,22 @@
 pipeline:
 
-  deploy:
+  mk:
+    image: alpine:latest
     commands:
-      - echo "droning on!"
-      - echo "drone build $${DRONE_BUILD_NUMBER}"
-      - echo "event $${event}"
-      - echo "env $${env}"
+      - mkdir -p "${path}"
+      - echo "some text" > "${path}/${file})"
+
+  deploy:
+    image: quay.io/ukhomeofficedigital/drone-service-now:latest
+    secrets: [ rk_url, rk_auth ]
+    a_var: "from drone conf"
+    b_var: "from bash `cat ${path}/${file}`"
+    report: "${path}/${file})"
     when:
-      event: [deployment, push]
-      branch: master
+      event: push
 
 matrix:
-  include:
-    - event: push
-      env: dev
-    - event: deployment
-      env: uat
-    - event: deployment
-      env: preprod
-    - event: deployment
-      env: prod
+  path:
+    - /service-now
+  file:
+    - report.txt
