@@ -1,22 +1,23 @@
 pipeline:
 
   deploy:
+    image: quay.io/ukhomeofficedigital/snowtify:0.0.1-d78d7a0a9e
     commands:
       - echo "droning on!"
-      - echo "drone build $${DRONE_BUILD_NUMBER}"
-      - echo "event $${event}"
-      - echo "env $${env}"
+      - pwd
+      - ls -al
+      - cd /app
+      - ls -al
+      - echo "$PWD"
+      - echo "$OLDPWD"
+      - ls -al /tmp
+      - ls -al /drone
+      - ls -al /drone/*
+      - ls -al /drone/src/*
+      - ls -al /drone/src/github.com/*
+      - echo "$HOME"
+      - echo test > test.log
+      - cd
+      - pwd
     when:
-      event: [deployment, push]
-      branch: master
-
-matrix:
-  include:
-    - event: push
-      env: dev
-    - event: deployment
-      env: uat
-    - event: deployment
-      env: preprod
-    - event: deployment
-      env: prod
+      event: [ push ]
