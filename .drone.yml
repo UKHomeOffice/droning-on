@@ -1,22 +1,11 @@
 pipeline:
 
   deploy:
+    image: ukhomeoffice/drone-docker
     commands:
-      - echo "droning on!"
-      - echo "drone build $${DRONE_BUILD_NUMBER}"
-      - echo "event $${event}"
-      - echo "env $${env}"
+      - echo "set:"
+      - set
+      - echo "env:"
+      - env
     when:
-      event: [deployment, push]
-      branch: master
-
-matrix:
-  include:
-    - event: push
-      env: dev
-    - event: deployment
-      env: uat
-    - event: deployment
-      env: preprod
-    - event: deployment
-      env: prod
+      event: push
