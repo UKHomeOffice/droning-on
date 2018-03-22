@@ -9,3 +9,15 @@ pipeline:
       - env
     when:
       event: push
+
+  env-var-in-plugin-var:
+    image: quay.io/ukhomeofficedigital/snowtify:latest
+    comments: 'status: ${status}, CI_BUILD_STATUS: ${CI_BUILD_STATUS}, CI_JOB_STATUS: ${CI_JOB_STATUS}, DRONE_BUILD_STATUS: ${DRONE_BUILD_STATUS}, DRONE_JOB_STATUS: ${DRONE_JOB_STATUS}'
+    when:
+      status: success
+
+  env-var-in-plugin-var2:
+    image: quay.io/ukhomeofficedigital/snowtify:latest
+    comments: 'status: $${status}, CI_BUILD_STATUS: $${CI_BUILD_STATUS}, CI_JOB_STATUS: $${CI_JOB_STATUS}, DRONE_BUILD_STATUS: $${DRONE_BUILD_STATUS}, DRONE_JOB_STATUS: $${DRONE_JOB_STATUS}'
+    when:
+      status: failure
