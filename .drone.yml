@@ -1,22 +1,15 @@
 pipeline:
 
-  mk:
-    image: alpine:latest
+  cause-a-fail:
+    image: ukhomeoffice/drone-docker
     commands:
-      - mkdir -p "${path}"
-      - echo "some text" > "${path}/${file})"
-
-  deploy:
-    image: quay.io/ukhomeofficedigital/drone-service-now:latest
-    secrets: [ rk_url, rk_auth ]
-    a_var: "from drone conf"
-    b_var: "from bash `cat ${path}/${file}`"
-    report: "${path}/${file})"
+      - exit 2
     when:
       event: push
 
-matrix:
-  path:
-    - /service-now
-  file:
-    - report.txt
+  check-env-vars:
+    image: ukhomeoffice/drone-docker
+    commands:
+      - set
+    when:
+      status: failure
