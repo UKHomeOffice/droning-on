@@ -1,22 +1,7 @@
 pipeline:
 
-  mk:
-    image: alpine:latest
-    commands:
-      - mkdir -p "${path}"
-      - echo "some text" > "${path}/${file})"
-
-  deploy:
-    image: quay.io/ukhomeofficedigital/drone-service-now:latest
-    secrets: [ rk_url, rk_auth ]
-    a_var: "from drone conf"
-    b_var: "from bash `cat ${path}/${file}`"
-    report: "${path}/${file})"
-    when:
-      event: push
-
-matrix:
-  path:
-    - /service-now
-  file:
-    - report.txt
+  value-for-success:
+    image: quay.io/ukhomeofficedigital/snowtify:latest
+    title: '[ "${DRONE_BUILD_STATUS}" = "success" ] && echo "all good" || echo "something wicked"'
+    description: '$$( [ "${DRONE_BUILD_STATUS}" = "success" ] && echo "all good" || echo "something wicked" )'
+    testing: '`[ "${DRONE_BUILD_STATUS}" = "success" ] && echo "all good" || echo "something wicked"`'
