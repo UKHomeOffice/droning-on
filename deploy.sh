@@ -6,4 +6,5 @@ docker run quay.io/ukhomeofficedigital/drone-trigger:latest \
   --repo "UKHomeOffice/droning-on" \
   --number "$2" \
   --deploy-to "${target_env}" \
-  --param "PROMOTE_FROM=dev"
+  --param "PROMOTE_FROM=dev" \
+  --verbose

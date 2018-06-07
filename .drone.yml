@@ -3,20 +3,55 @@ pipeline:
   mk:
     image: alpine:latest
     commands:
-      - mkdir -p "${path}"
-      - echo "some text" > "${path}/${file})"
+      - echo "a nice long description of the intended changes" > "$${desc}"
+      - echo "lots of test output" > "$${test}"
+
+
+# test the `levops` [prod] deploy process
+  notify_snow:
+    image: quay.io/ukhomeofficedigital/snowtify
+    log_level: debug
+    test_user: lev-ci-test
+    prod_user: lev-ci
+    test_pass: test-pass
+    prod_pass: prod-pass
+    description_file: ${desc}
+    testing_file: ${test}
+    internal_id_file: ${int_id}
+    fail_on_error: false
+    when:
+      event: deployment
+      environment: [uat, qa, prod]
 
   deploy:
-    image: quay.io/ukhomeofficedigital/drone-service-now:latest
-    secrets: [ rk_url, rk_auth ]
-    a_var: "from drone conf"
-    b_var: "from bash `cat ${path}/${file}`"
-    report: "${path}/${file})"
+    image: alpine:latest
+    commands:
+      - echo "lots of deployment logs" > $${comment}
     when:
-      event: push
+      event: [deployment, push]
+
+  update_snow:
+    image: quay.io/ukhomeofficedigital/snowtify
+    log_level: debug
+    test_user: lev-ci-test
+    prod_user: lev-ci
+    test_pass: test-pass
+    prod_pass: prod-pass
+    internal_id_file: ${int_id}
+    comments_file: ${comment}
+    fail_on_error: false
+    when:
+      event: deployment
+      environment: [uat, qa, prod]
+      status: [success, failure]
+
 
 matrix:
-  path:
-    - /service-now
-  file:
-    - report.txt
+  int_id:
+    - /drone/snow-int-id
+  desc:
+    - /drone/snow-desc.log
+  test:
+    - /drone/snow-test.log
+  comment:
+    - /drone/snow-deploy.log
