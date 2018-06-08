@@ -26,7 +26,7 @@ pipeline:
   deploy:
     image: quay.io/ukhomeofficedigital/lev-ci:latest
     commands:
-      - cat "not a real file" | tee $${comment}
+      - cat "not a real file" | tee $${comment} ; exit ${PIPESTATUS}
     when:
       event: [deployment, push]
 
