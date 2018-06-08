@@ -24,9 +24,9 @@ pipeline:
       environment: [uat, qa, prod]
 
   deploy:
-    image: alpine:latest
+    image: quay.io/ukhomeofficedigital/lev-ci:latest
     commands:
-      - echo "lots of deployment logs" > $${comment}
+      - cat "not a real file" | tee $${comment}
     when:
       event: [deployment, push]
 
