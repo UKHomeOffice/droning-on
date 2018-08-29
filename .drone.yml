@@ -7,12 +7,12 @@ pipeline:
       - echo "some text" > txt
       - cat $!
       - XIT=$?
-      - printf "xit: $${XIT}\n" > rslt
+      - printf "xit $${XIT}\n" > rslt
       - cat rslt
       - echo "some text" > txt2
       - cat $$!
       - XIT=$$?
-      - printf "xit: $${XIT}\n" > rslt
+      - printf "xit $${XIT}\n" > rslt
       - cat rslt
     when:
       event: push
