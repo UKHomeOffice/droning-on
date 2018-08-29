@@ -4,15 +4,18 @@ pipeline:
     image: docker:1.11
     commands:
       - set +e
-      - echo "some text" > txt
-      - cat $!
-      - XIT=$?
-      - printf "xit $${XIT}\n" > rslt
-      - cat rslt
-      - echo "some text" > txt2
-      - cat $$!
-      - XIT=$$?
-      - printf "xit $${XIT}\n" > rslt
-      - cat rslt
+      - echo "test single dollar, should print this twice"
+      - echo !$
+      - echo "test single DOUBLE-dollar, should print this two times"
+      - echo !$$
+#      - echo "I expect that bangs work normally, so this should appear twice"
+#      - !! - this doesn't work because it's not valid yaml syntax
+      - sleep 5 &
+      - echo "the process id of the sleep is $!, or is it $$! maybe?"
+#       for some reason true and false have to wrapped in strings!
+      - "true"
+      - echo "the last command completed successfully with $? as the result, or should that be $$? as the result"
+      - "false"
+      - echo "the last command completed unsuccessfully with $? as the result, or should that be $$? as the result"
     when:
       event: push
