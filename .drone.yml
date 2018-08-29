@@ -13,9 +13,9 @@ pipeline:
       - sleep 5 &
       - echo "the process id of the sleep is $!, or is it $$! maybe?"
 #       for some reason true and false have to wrapped in strings!
-      - "true"
-      - echo "the last command completed successfully with $? as the result, or should that be $$? as the result"
       - "false"
       - echo "the last command completed unsuccessfully with $? as the result, or should that be $$? as the result"
+      - "true"
+      - echo "the last command completed successfully with $? as the result, or should that be $$? as the result"
     when:
       event: push
