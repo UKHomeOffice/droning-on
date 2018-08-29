@@ -1,23 +1,18 @@
 pipeline:
 
   deploy:
-    image: ukhomeoffice/drone-docker
+    image: docker:1.11
     commands:
-      - echo "set:"
-      - set
-      - echo "env:"
-      - env
+      - set +e
+      - echo "some text" > txt
+      - cat $!
+      - XIT=$?
+      - printf "xit: $${XIT}\n" > rslt
+      - cat rslt
+      - echo "some text" > txt2
+      - cat $$!
+      - XIT=$$?
+      - printf "xit: $${XIT}\n" > rslt
+      - cat rslt
     when:
       event: push
-
-  env-var-in-plugin-var:
-    image: quay.io/ukhomeofficedigital/snowtify:latest
-    comments: 'status: ${status}, CI_BUILD_STATUS: ${CI_BUILD_STATUS}, CI_JOB_STATUS: ${CI_JOB_STATUS}, DRONE_BUILD_STATUS: ${DRONE_BUILD_STATUS}, DRONE_JOB_STATUS: ${DRONE_JOB_STATUS}'
-    when:
-      status: success
-
-  env-var-in-plugin-var2:
-    image: quay.io/ukhomeofficedigital/snowtify:latest
-    comments: 'status: $${status}, CI_BUILD_STATUS: $${CI_BUILD_STATUS}, CI_JOB_STATUS: $${CI_JOB_STATUS}, DRONE_BUILD_STATUS: $${DRONE_BUILD_STATUS}, DRONE_JOB_STATUS: $${DRONE_JOB_STATUS}'
-    when:
-      status: failure
